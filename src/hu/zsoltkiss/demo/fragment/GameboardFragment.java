@@ -18,10 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-public class GameboardFragment extends Fragment implements OnClickListener {
+public class GameboardFragment extends Fragment implements OnClickListener, AnimationListener {
 	
 	public interface GameProgressListener {
 		public void incrementStepCount();
@@ -43,6 +46,13 @@ public class GameboardFragment extends Fragment implements OnClickListener {
 	private MediaPlayer mediaPlayer;
 	
 	private GameProgressListener progressListener;
+	
+	// Animation
+	private Animation animZoomIn;
+	private Animation animZoomOut;
+	
+	private TextView tvEmpty;
+	private TextView tvClicked;
 
 	/***********************************************************************************
 	 * FRAGMENT LIFECYCLE
@@ -61,6 +71,7 @@ public class GameboardFragment extends Fragment implements OnClickListener {
 		shuffle();
 		initBoard(false);
 		initMediaPlayer();
+		initAnimations();
 
 		return v;
 	}
@@ -94,8 +105,8 @@ public class GameboardFragment extends Fragment implements OnClickListener {
 			List<TextView> clickables = getNeighborsOfEmptyCell();
 
 			if (clickables.contains(v)) {
-				TextView tvClicked = (TextView) v;
-				TextView tvEmpty = (TextView) tableLayout.findViewWithTag("pos"
+				tvClicked = (TextView) v;
+				tvEmpty = (TextView) tableLayout.findViewWithTag("pos"
 						+ emptyValueIndex);
 
 				int selectedValueIndex = -1;
@@ -131,6 +142,39 @@ public class GameboardFragment extends Fragment implements OnClickListener {
 
 	}
 	
+	
+	/***********************************************************************************
+	 * INTERFACE IMPLEMENTATION: AnimationListener
+	 ***********************************************************************************/
+	@Override
+	public void onAnimationStart(Animation animation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void onAnimationEnd(Animation animation) {
+		if (animation == animZoomOut) {
+			
+			
+		}
+		
+		if (animation == animZoomIn) {
+			
+		}
+		
+	}
+
+
+
+	@Override
+	public void onAnimationRepeat(Animation animation) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	/***********************************************************************************
 	 * PUBLIC METHODS
 	 ***********************************************************************************/
@@ -158,6 +202,8 @@ public class GameboardFragment extends Fragment implements OnClickListener {
 			TextView textView = (TextView) tableLayout.findViewWithTag("pos"
 					+ i);
 			textView.setText(boardState.get(i));
+			
+			textView.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.sequential_zoom_out_in));
 
 			if (!updateOnly) {
 				textView.setOnClickListener(this);
@@ -277,6 +323,14 @@ public class GameboardFragment extends Fragment implements OnClickListener {
 		dialog.show();
 	}
 	
+	private void initAnimations() {
+		animZoomIn = AnimationUtils.loadAnimation(getActivity(), R.anim.zoom_in); 
+		animZoomOut = AnimationUtils.loadAnimation(getActivity(), R.anim.zoom_out); 
+		
+		animZoomIn.setAnimationListener(this);
+		animZoomOut.setAnimationListener(this);
+	}
+	
 	@SuppressWarnings("unused")
 	public void cheat() {
 		boardState = Arrays
@@ -290,4 +344,8 @@ public class GameboardFragment extends Fragment implements OnClickListener {
 
 		}
 	}
+
+
+
+	
 }
