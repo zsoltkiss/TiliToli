@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TiliToli</string>
+    <string name="btn_new_game">Új játék</string>
+    
+    <string name="btn_cheat">Segítség</string>
+    
+    <string name="btn_OK">OK</string>
+   
+    
+    <string name="cdesc_1">New game button</string>
+    
+    <string name="placeholder_num">0</string>
+    
+    <string name="game_over_title">A játék véget ért.</string>
+    <string name="game_over_message">Gratulálunk, sikerült kiraknod a táblát!</string>
+
+</resources>
